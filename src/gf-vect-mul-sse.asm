@@ -2,7 +2,7 @@
 ;  Copyright(c) 2011-2014 Intel Corporation All rights reserved.
 ;
 ;  Redistribution and use in source and binary forms, with or without
-;  modification, are permitted provided that the following conditions 
+;  modification, are permitted provided that the following conditions
 ;  are met:
 ;    * Redistributions of source code must retain the above copyright
 ;      notice, this list of conditions and the following disclaimer.
@@ -34,6 +34,19 @@
 
 
 %ifidn __OUTPUT_FORMAT__, elf64
+ %define arg0  rdi
+ %define arg1  rsi
+ %define arg2  rdx
+ %define arg3  rcx
+ %define arg4  r8
+ %define arg5  r9
+ %define tmp   r11
+ %define return rax
+ %define func(x) x:
+ %define FUNC_SAVE
+ %define FUNC_RESTORE
+
+%elifidn __OUTPUT_FORMAT__, macho64
  %define arg0  rdi
  %define arg1  rsi
  %define arg2  rdx

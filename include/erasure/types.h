@@ -41,7 +41,7 @@
 extern "C" {
 #endif
 
-#ifndef __unix__
+#if !defined(__unix__) && !defined(__APPLE__)
 #ifdef __MINGW32__
 # include <_mingw.h>
 #endif

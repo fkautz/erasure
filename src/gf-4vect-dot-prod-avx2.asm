@@ -68,6 +68,41 @@
  %endmacro
 %endif
 
+%ifidn __OUTPUT_FORMAT__, macho64
+ %define arg0  rdi
+ %define arg1  rsi
+ %define arg2  rdx
+ %define arg3  rcx
+ %define arg4  r8
+ %define arg5  r9
+
+ %define tmp   r11
+ %define tmp.w r11d
+ %define tmp.b r11b
+ %define tmp2  r10
+ %define tmp3  r13		; must be saved and restored
+ %define tmp4  r12		; must be saved and restored
+ %define tmp5  r14		; must be saved and restored
+ %define tmp6  r15		; must be saved and restored
+ %define return rax
+ %define PS 8
+ %define LOG_PS 3
+
+ %define func(x) x:
+ %macro FUNC_SAVE 0
+	push	r12
+	push	r13
+	push	r14
+	push	r15
+ %endmacro
+ %macro FUNC_RESTORE 0
+	pop	r15
+	pop	r14
+	pop	r13
+	pop	r12
+ %endmacro
+%endif
+
 %ifidn __OUTPUT_FORMAT__, win64
  %define arg0   rcx
  %define arg1   rdx

@@ -50,6 +50,23 @@
  %define FUNC_RESTORE
 %endif
 
+%ifidn __OUTPUT_FORMAT__, macho64
+ %define arg0  rdi
+ %define arg1  rsi
+ %define arg2  rdx
+ %define arg3  rcx
+ %define arg4  r8
+
+ %define tmp   r11
+ %define tmp2  r10
+ %define tmp3  r9
+ %define return rax
+ %define PS 8
+ %define func(x) x:
+ %define FUNC_SAVE
+ %define FUNC_RESTORE
+%endif
+
 %ifidn __OUTPUT_FORMAT__, win64
  %define arg0   rcx
  %define arg1   rdx
