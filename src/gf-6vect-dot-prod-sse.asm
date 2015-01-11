@@ -220,8 +220,8 @@ section .text
 %define xp6    xmm7
 
 align 16
-global gf_6vect_dot_prod_sse:function
-func(gf_6vect_dot_prod_sse)
+global GF_6VECT_DOT_PROD_SSE:function
+func(GF_6VECT_DOT_PROD_SSE)
 	FUNC_SAVE
 	sub	len, 16
 	jl	.return_fail
@@ -358,4 +358,4 @@ global %1_slver
 	db 0x%3, 0x%2
 %endmacro
 ;;;       func                  core, ver, snum
-slversion gf_6vect_dot_prod_sse, 00,  03,  0066
+slversion GF_6VECT_DOT_PROD_SSE, 00,  03,  0066
