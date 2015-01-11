@@ -2,7 +2,7 @@
 ;  Copyright(c) 2011-2014 Intel Corporation All rights reserved.
 ;
 ;  Redistribution and use in source and binary forms, with or without
-;  modification, are permitted provided that the following conditions 
+;  modification, are permitted provided that the following conditions
 ;  are met:
 ;    * Redistributions of source code must retain the above copyright
 ;      notice, this list of conditions and the following disclaimer.
@@ -32,6 +32,11 @@
 ;;;
 ;;; Author: Gregory Tucker
 
+%ifidn __OUTPUT_FORMAT__, macho64
+ %define GF_5VECT_DOT_PROD_AVX _gf_5vect_dot_prod_avx
+%else
+ %define GF_5VECT_DOT_PROD_AVX gf_5vect_dot_prod_avx
+%endif
 
 %ifidn __OUTPUT_FORMAT__, elf64
  %define arg0  rdi

@@ -2,7 +2,7 @@
 ;  Copyright(c) 2011-2014 Intel Corporation All rights reserved.
 ;
 ;  Redistribution and use in source and binary forms, with or without
-;  modification, are permitted provided that the following conditions 
+;  modification, are permitted provided that the following conditions
 ;  are met:
 ;    * Redistributions of source code must retain the above copyright
 ;      notice, this list of conditions and the following disclaimer.
@@ -32,6 +32,11 @@
 ;;;
 ;;; Author: Gregory Tucker
 
+%ifidn __OUTPUT_FORMAT__, macho64
+ %define GF_5VECT_DOT_PROD_AVX2 _gf_5vect_dot_prod_avx2
+%else
+ %define GF_5VECT_DOT_PROD_AVX2 gf_5vect_dot_prod_avx2
+%endif
 
 %ifidn __OUTPUT_FORMAT__, elf64
  %define arg0  rdi
@@ -224,8 +229,8 @@ section .text
 %define xp5    ymm6
 
 align 16
-global gf_5vect_dot_prod_avx2:function
-func(gf_5vect_dot_prod_avx2)
+global GF_5VECT_DOT_PROD_AVX2:function
+func(GF_5VECT_DOT_PROD_AVX2)
 	FUNC_SAVE
 	sub	len, 32
 	jl	.return_fail
@@ -355,4 +360,4 @@ global %1_slver
 	db 0x%3, 0x%2
 %endmacro
 ;;;       func                  core, ver, snum
-slversion gf_5vect_dot_prod_avx2, 04,  03,  0199
+slversion GF_5VECT_DOT_PROD_AVX2, 04,  03,  0199

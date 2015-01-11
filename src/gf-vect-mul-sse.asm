@@ -32,6 +32,11 @@
 ;;;
 ;;; Author: Gregory Tucker
 
+%ifidn __OUTPUT_FORMAT__, macho64
+ %define GF_VECT_MUL_SSE _gf_vect_mul_sse
+%else
+ %define GF_VECT_MUL_SSE gf_vect_mul_sse
+%endif
 
 %ifidn __OUTPUT_FORMAT__, elf64
  %define arg0  rdi
@@ -125,8 +130,8 @@ section .text
 
 
 align 16
-global gf_vect_mul_sse:function
-func(gf_vect_mul_sse)
+global GF_VECT_MUL_SSE:function
+func(GF_VECT_MUL_SSE)
 	FUNC_SAVE
 	mov	pos, 0
 	movdqa	xmask0f, [mask0f]	;Load mask of lower nibble in each byte
@@ -188,4 +193,4 @@ global %1_slver
 	db 0x%3, 0x%2
 %endmacro
 ;;;       func        core, ver, snum
-slversion gf_vect_mul_sse, 00,   02,  0034
+slversion GF_VECT_MUL_SSE, 00,   02,  0034
