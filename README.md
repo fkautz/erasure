@@ -1,11 +1,6 @@
-- Install 'build-essential'
-
-~~~
-  # apt-get install build-essential -y
-~~~
-
-- Install 'yasm'
-
-~~~
-  # apt-get install yasm -y
-~~~
+```sh
+# go get -d github.com/minio-io/erasure
+# cd $GOPATH/src/github.com/minio-io/erasure
+# git checkout golang_restructure
+# go build
+```
