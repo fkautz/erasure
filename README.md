@@ -1,6 +1,9 @@
-```sh
-# go get -d github.com/minio-io/erasure
-# cd $GOPATH/src/github.com/minio-io/erasure
-# git checkout golang_restructure
-# go build
-```
+## Introduction
+
+Erasure is an open source Golang library written on top of ISAL (Intel Intelligent Storage Library) released under [Apache license v2](./LICENSE)
+
+### Developers
+* [Get Source](./CONTRIBUTING.md)
+* [Build Dependencies](./BUILDDEPS.md)
+* [Development Workflow](./CONTRIBUTING.md#developer-guidelines)
+* [Developer discussions and bugs](https://github.com/Minio-io/erasure/issues)
