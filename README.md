@@ -1,11 +1,9 @@
-- Install 'build-essential'
+## Introduction
 
-~~~
-  # apt-get install build-essential -y
-~~~
+Erasure is an open source Golang library written on top of ISAL (Intel Intelligent Storage Library) released under [Apache license v2](./LICENSE)
 
-- Install 'yasm'
-
-~~~
-  # apt-get install yasm -y
-~~~
+### Developers
+* [Get Source](./CONTRIBUTING.md)
+* [Build Dependencies](./BUILDDEPS.md)
+* [Development Workflow](./CONTRIBUTING.md#developer-guidelines)
+* [Developer discussions and bugs](https://github.com/Minio-io/erasure/issues)

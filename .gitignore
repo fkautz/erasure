@@ -20,3 +20,4 @@ gf-vect-mul-avx-test
 gf-vect-mul-base-test
 gf-vect-mul-sse-test
 gf-vect-mul-test
+*.syso
