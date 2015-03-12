@@ -18,8 +18,9 @@ package erasure
 
 import (
 	"bytes"
-	. "gopkg.in/check.v1"
 	"testing"
+
+	. "gopkg.in/check.v1"
 )
 
 type MySuite struct{}
@@ -29,7 +30,7 @@ var _ = Suite(&MySuite{})
 func Test(t *testing.T) { TestingT(t) }
 
 func (s *MySuite) TestCauchyDecode(c *C) {
-	ep, _ := ParseEncoderParams(10, 5, CAUCHY)
+	ep, _ := ParseEncoderParams(10, 5, Cauchy)
 
 	data := []byte("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.")
 
@@ -43,10 +44,10 @@ func (s *MySuite) TestCauchyDecode(c *C) {
 	chunks[9] = nil
 	chunks[13] = nil
 
-	recovered_data, err := e.Decode(chunks, length)
+	recoveredData, err := e.Decode(chunks, length)
 	c.Assert(err, IsNil)
 
-	if !bytes.Equal(data, recovered_data) {
+	if !bytes.Equal(data, recoveredData) {
 		c.Fatalf("Recovered data mismatches with original data")
 	}
 }

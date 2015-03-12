@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-// +build amd64
-
 package erasure
 
 // #cgo CFLAGS: -O0
@@ -28,9 +26,11 @@ import (
 	"unsafe"
 )
 
+type Technique int
+
 const (
-	VANDERMONDE = iota
-	CAUCHY
+	Vandermonde Technique = iota
+	Cauchy
 )
 
 const (
@@ -38,11 +38,15 @@ const (
 	M = 3
 )
 
+const (
+	SimdAlign = 32
+)
+
 // EncoderParams is a configuration set for building an encoder. It is created using ValidateParams.
 type EncoderParams struct {
-	K,
-	M,
-	Technique int // cauchy or vandermonde matrix (RS)
+	K         uint8
+	M         uint8
+	Technique Technique // cauchy or vandermonde matrix (RS)
 }
 
 // Encoder is an object used to encode and decode data.
@@ -58,10 +62,10 @@ type Encoder struct {
 
 // ParseEncoderParams creates an EncoderParams object.
 //
-// k and n represent the matrix size, which corresponds to the protection level.
+// k and m represent the matrix size, which corresponds to the protection level
+// technique is the matrix type. Valid inputs are Cauchy (recommended) or Vandermonde.
 //
-// technique is the matrix type. Valid inputs are CAUCHY (recommended) or VANDERMONDE.
-func ParseEncoderParams(k, m, technique int) (*EncoderParams, error) {
+func ParseEncoderParams(k, m uint8, technique Technique) (*EncoderParams, error) {
 	if k < 1 {
 		return nil, errors.New("k cannot be zero")
 	}
@@ -75,9 +79,9 @@ func ParseEncoderParams(k, m, technique int) (*EncoderParams, error) {
 	}
 
 	switch technique {
-	case VANDERMONDE:
+	case Vandermonde:
 		break
-	case CAUCHY:
+	case Cauchy:
 		break
 	default:
 		return nil, errors.New("Technique can be either vandermonde or cauchy")
@@ -90,7 +94,7 @@ func ParseEncoderParams(k, m, technique int) (*EncoderParams, error) {
 	}, nil
 }
 
-// NewEncoder creates an encoder with a given set of parameters.
+// NewEncoder creates an encoder object with a given set of parameters.
 func NewEncoder(ep *EncoderParams) *Encoder {
 	var k = C.int(ep.K)
 	var m = C.int(ep.M)
@@ -112,15 +116,28 @@ func NewEncoder(ep *EncoderParams) *Encoder {
 	}
 }
 
+func getChunkSize(k, split_len int) int {
+	var alignment, remainder, padded_len int
+
+	alignment = k * SimdAlign
+	remainder = split_len % alignment
+
+	padded_len = split_len
+	if remainder != 0 {
+		padded_len = split_len + (alignment - remainder)
+	}
+	return padded_len / k
+}
+
 // Encode encodes a block of data. The input is the original data. The output
 // is a 2 tuple containing (k + m) chunks of erasure encoded data and the
 // length of the original object.
 func (e *Encoder) Encode(block []byte) ([][]byte, int) {
 	var block_len = len(block)
 
-	chunk_size := int(C.minio_calc_chunk_size(e.k, C.uint32_t(block_len)))
-	chunk_len := chunk_size * e.p.K
-	pad_len := chunk_len - block_len
+	chunk_size := getChunkSize(int(e.k), block_len)
+	chunk_len := chunk_size * int(e.k)
+	pad_len := int(chunk_len) - block_len
 
 	if pad_len > 0 {
 		s := make([]byte, pad_len)
@@ -128,7 +145,7 @@ func (e *Encoder) Encode(block []byte) ([][]byte, int) {
 		block = append(block, s...)
 	}
 
-	coded_len := chunk_size * e.p.M
+	coded_len := chunk_size * int(e.p.M)
 	c := make([]byte, coded_len)
 	block = append(block, c...)
 
@@ -138,12 +155,12 @@ func (e *Encoder) Encode(block []byte) ([][]byte, int) {
 
 	var i int
 	// Add data blocks to chunks
-	for i = 0; i < e.p.K; i++ {
+	for i = 0; i < int(e.p.K); i++ {
 		chunks[i] = block[i*chunk_size : (i+1)*chunk_size]
 		pointers[i] = &chunks[i][0]
 	}
 
-	for i = e.p.K; i < (e.p.K + e.p.M); i++ {
+	for i = int(e.p.K); i < int(e.p.K+e.p.M); i++ {
 		chunks[i] = make([]byte, chunk_size)
 		pointers[i] = &chunks[i][0]
 	}
