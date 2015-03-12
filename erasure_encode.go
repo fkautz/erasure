@@ -18,13 +18,13 @@
 
 package erasure
 
+// #cgo CFLAGS: -O0
 // #include <stdlib.h>
 // #include "ec-code.h"
 // #include "ec-common.h"
 import "C"
 import (
 	"errors"
-	//"fmt"
 	"unsafe"
 )
 

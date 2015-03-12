@@ -23,5 +23,3 @@ package erasure
 //go:generate yasm -f elf64 gf-vect-dot-prod-sse.asm -o gf-vect-dot-prod-sse.syso
 //go:generate yasm -f elf64 gf-vect-mul-avx.asm -o gf-vect-mul-avx.syso
 //go:generate yasm -f elf64 gf-vect-mul-sse.asm -o gf-vect-mul-sse.syso
-
-import "C"
