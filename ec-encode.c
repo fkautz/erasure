@@ -25,16 +25,16 @@
 */
 
 int32_t minio_init_encoder (int technique, int k, int m,
-                            uint8_t **encode_matrix,
-                            uint8_t **encode_tbls)
+                            unsigned char **encode_matrix,
+                            unsigned char **encode_tbls)
 {
         size_t encode_matrix_size;
         size_t encode_tbls_size;
-        uint8_t *tmp_matrix;
-        uint8_t *tmp_tbls;
+        unsigned char *tmp_matrix;
+        unsigned char *tmp_tbls;
 
-        tmp_matrix = (uint8_t *) malloc (k * (k + m));
-        tmp_tbls = (uint8_t *) malloc (k * (k + m) * 32);
+        tmp_matrix = (unsigned char *) malloc (k * (k + m));
+        tmp_tbls = (unsigned char *) malloc (k * (k + m) * 32);
 
 	if (technique == 0) {
                 /*

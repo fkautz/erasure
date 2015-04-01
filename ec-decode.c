@@ -39,13 +39,13 @@ int32_t _minio_src_index_in_error (int r, int32_t *error_index)
 int32_t minio_get_source_target (int errs, int k, int m,
                                  int32_t *error_index,
                                  uint32_t *decode_index,
-                                 uint8_t **buffs,
-                                 uint8_t ***source,
-                                 uint8_t ***target)
+                                 unsigned char **buffs,
+                                 unsigned char ***source,
+                                 unsigned char ***target)
 {
         int i;
-        uint8_t *tmp_source[k];
-        uint8_t *tmp_target[m];
+        unsigned char *tmp_source[k];
+        unsigned char *tmp_target[m];
 
         if (k < 0 || m < 0) {
                 return -1;
@@ -55,12 +55,12 @@ int32_t minio_get_source_target (int errs, int k, int m,
         memset (tmp_target, 0, m);
 
         for (i = 0; i < k; i++) {
-                tmp_source[i] = (uint8_t *) buffs[decode_index[i]];
+                tmp_source[i] = (unsigned char *) buffs[decode_index[i]];
         }
 
         for (i = 0; i < m; i++) {
                 if (i < errs)
-                        tmp_target[i] = (uint8_t *) buffs[error_index[i]];
+                        tmp_target[i] = (unsigned char *) buffs[error_index[i]];
         }
 
         *source = tmp_source;
@@ -75,16 +75,16 @@ int32_t minio_get_source_target (int errs, int k, int m,
 
 int minio_init_decoder (int32_t *error_index,
                         int k, int n, int errs,
-                        uint8_t *encode_matrix,
-                        uint8_t **decode_matrix,
-                        uint8_t **decode_tbls,
+                        unsigned char *encode_matrix,
+                        unsigned char **decode_matrix,
+                        unsigned char **decode_tbls,
                         uint32_t **decode_index)
 {
         int i, j, r, s, l, z;
-        uint8_t input_matrix[k * n];
-        uint8_t inverse_matrix[k * n];
-        uint8_t tmp_decode_matrix[k * n];
-        uint8_t tmp_decode_tbls[k * n * 32];
+        unsigned char input_matrix[k * n];
+        unsigned char inverse_matrix[k * n];
+        unsigned char tmp_decode_matrix[k * n];
+        unsigned char tmp_decode_tbls[k * n * 32];
         uint32_t tmp_decode_index[k];
 
         for (i = 0, r = 0; i < k; i++, r++) {

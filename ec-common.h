@@ -20,20 +20,20 @@
 #include <stdint.h>
 
 int32_t minio_init_encoder (int technique, int k, int m,
-                            uint8_t **encode_matrix,
-                            uint8_t **encode_tbls);
+                            unsigned char **encode_matrix,
+                            unsigned char **encode_tbls);
 
 int32_t minio_init_decoder (int32_t *error_index,
                             int k, int n, int errs,
-                            uint8_t *encoding_matrix,
-                            uint8_t **decode_matrix,
-                            uint8_t **decode_tbls,
+                            unsigned char *encoding_matrix,
+                            unsigned char **decode_matrix,
+                            unsigned char **decode_tbls,
                             uint32_t **decode_index);
 
 int32_t minio_get_source_target (int errs, int k, int m,
                                  int32_t *error_index,
                                  uint32_t *decode_index,
-                                 uint8_t **buffs,
-                                 uint8_t ***source,
-                                 uint8_t ***target);
+                                 unsigned char **buffs,
+                                 unsigned char ***source,
+                                 unsigned char ***target);
 #endif /* __COMMON_H__ */
