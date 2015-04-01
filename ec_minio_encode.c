@@ -17,8 +17,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "ec-code.h"
-#include "ec-common.h"
+#include "ec_isal-l.h"
+#include "ec_minio_common.h"
 
 /*
   Generate encode matrix during the encoding phase

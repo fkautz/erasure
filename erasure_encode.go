@@ -18,8 +18,8 @@ package erasure
 
 // #cgo CFLAGS: -O0
 // #include <stdlib.h>
-// #include "ec-code.h"
-// #include "ec-common.h"
+// #include "ec_isal-l.h"
+// #include "ec_minio_common.h"
 import "C"
 import (
 	"errors"

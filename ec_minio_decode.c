@@ -18,8 +18,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "ec-code.h"
-#include "ec-common.h"
+#include "ec_isal-l.h"
+#include "ec_minio_common.h"
 
 static
 int32_t _minio_src_index_in_error (int r, int32_t *error_index)
