@@ -2,7 +2,7 @@
 ;  Copyright(c) 2011-2015 Intel Corporation All rights reserved.
 ;
 ;  Redistribution and use in source and binary forms, with or without
-;  modification, are permitted provided that the following conditions 
+;  modification, are permitted provided that the following conditions
 ;  are met:
 ;    * Redistributions of source code must retain the above copyright
 ;      notice, this list of conditions and the following disclaimer.
@@ -31,6 +31,12 @@
 ;;; gf_2vect_dot_prod_sse(len, vec, *g_tbls, **buffs, **dests);
 ;;;
 
+%ifidn __OUTPUT_FORMAT__, macho64
+ %define GF_2VECT_DOT_PROD_SSE _gf_2vect_dot_prod_sse
+%else
+ %define GF_2VECT_DOT_PROD_SSE gf_2vect_dot_prod_sse
+%endif
+
 %ifidn __OUTPUT_FORMAT__, elf64
  %define arg0  rdi
  %define arg1  rsi
@@ -55,6 +61,38 @@
 	push	r12
  %endmacro
  %macro FUNC_RESTORE 0
+	pop	r12
+ %endmacro
+%endif
+
+%ifidn __OUTPUT_FORMAT__, macho64
+ %define arg0  rdi
+ %define arg1  rsi
+ %define arg2  rdx
+ %define arg3  rcx
+ %define arg4  r8
+ %define arg5  r9
+
+ %define tmp   r11
+ %define tmp.w r11d
+ %define tmp.b r11b
+ %define tmp2  r10
+ %define tmp3  r13		; must be saved and restored
+ %define tmp4  r12		; must be saved and restored
+ %define return rax
+ %macro  SLDR   2
+ %endmacro
+ %define SSTR   SLDR
+ %define PS     8
+ %define LOG_PS 3
+
+ %define func(x) x:
+ %macro FUNC_SAVE 0
+	push	r12
+	push	r13
+ %endmacro
+ %macro FUNC_RESTORE 0
+	pop	r13
 	pop	r12
  %endmacro
 %endif
@@ -236,9 +274,9 @@ section .text
 %endif
 
 align 16
-global gf_2vect_dot_prod_sse:function
+global GF_2VECT_DOT_PROD_SSE:function
 
-func(gf_2vect_dot_prod_sse)
+func(GF_2VECT_DOT_PROD_SSE)
 	FUNC_SAVE
 	SLDR 	len, len_m
 	sub	len, 16
@@ -342,4 +380,4 @@ global %1_slver
 	db 0x%3, 0x%2
 %endmacro
 ;;;       func                  core, ver, snum
-slversion gf_2vect_dot_prod_sse, 00,  03,  0062
+slversion GF_2VECT_DOT_PROD_SSE, 00,  03,  0062

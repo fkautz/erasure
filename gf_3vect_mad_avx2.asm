@@ -2,7 +2,7 @@
 ;  Copyright(c) 2011-2015 Intel Corporation All rights reserved.
 ;
 ;  Redistribution and use in source and binary forms, with or without
-;  modification, are permitted provided that the following conditions 
+;  modification, are permitted provided that the following conditions
 ;  are met:
 ;    * Redistributions of source code must retain the above copyright
 ;      notice, this list of conditions and the following disclaimer.
@@ -30,6 +30,12 @@
 ;;;
 ;;; gf_3vect_mad_avx2(len, vec, vec_i, mul_array, src, dest);
 ;;;
+
+%ifidn __OUTPUT_FORMAT__, macho64
+ %define GF_3VECT_MAD_AVX2 _gf_3vect_mad_avx2
+%else
+ %define GF_3VECT_MAD_AVX2 gf_3vect_mad_avx2
+%endif
 
 %define PS 8
 
@@ -87,6 +93,24 @@
  %endmacro
 
 %elifidn __OUTPUT_FORMAT__, elf64
+ %define arg0  rdi
+ %define arg0.w edi
+ %define arg1  rsi
+ %define arg2  rdx
+ %define arg3  rcx
+ %define arg4  r8
+ %define arg5  r9
+
+ %define tmp   r11
+ %define tmp.w r11d
+ %define tmp.b r11b
+ %define return rax
+ %define return.w eax
+
+ %define func(x) x:
+ %define FUNC_SAVE
+ %define FUNC_RESTORE
+%elifidn __OUTPUT_FORMAT__, macho64
  %define arg0  rdi
  %define arg0.w edi
  %define arg1  rsi
@@ -163,8 +187,8 @@ section .text
 %define xd3     ymm10
 
 align 16
-global gf_3vect_mad_avx2:function
-func(gf_3vect_mad_avx2)
+global GF_3VECT_MAD_AVX2:function
+func(GF_3VECT_MAD_AVX2)
 	FUNC_SAVE
 	sub	len, 32
 	jl	.return_fail
@@ -320,4 +344,4 @@ global %1_slver
 	db 0x%3, 0x%2
 %endmacro
 ;;;       func              core, ver, snum
-slversion gf_3vect_mad_avx2, 04,  00,  0208
+slversion GF_3VECT_MAD_AVX2, 04,  00,  0208

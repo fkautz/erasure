@@ -2,7 +2,7 @@
 ;  Copyright(c) 2011-2015 Intel Corporation All rights reserved.
 ;
 ;  Redistribution and use in source and binary forms, with or without
-;  modification, are permitted provided that the following conditions 
+;  modification, are permitted provided that the following conditions
 ;  are met:
 ;    * Redistributions of source code must retain the above copyright
 ;      notice, this list of conditions and the following disclaimer.
@@ -31,7 +31,33 @@
 ;;; gf_vect_dot_prod_sse(len, vec, *g_tbls, **buffs, *dest);
 ;;;
 
+%ifidn __OUTPUT_FORMAT__, macho64
+ %define GF_VECT_DOT_PROD_SSE _gf_vect_dot_prod_sse
+%else
+ %define GF_VECT_DOT_PROD_SSE gf_vect_dot_prod_sse
+%endif
+
 %ifidn __OUTPUT_FORMAT__, elf64
+ %define arg0  rdi
+ %define arg1  rsi
+ %define arg2  rdx
+ %define arg3  rcx
+ %define arg4  r8
+
+ %define tmp   r11
+ %define tmp2  r10
+ %define tmp3  r9
+ %define return rax
+ %macro  SLDR 2
+ %endmacro
+ %define SSTR SLDR
+ %define PS 8
+ %define func(x) x:
+ %define FUNC_SAVE
+ %define FUNC_RESTORE
+%endif
+
+%ifidn __OUTPUT_FORMAT__, macho64
  %define arg0  rdi
  %define arg1  rsi
  %define arg2  rdx
@@ -192,8 +218,8 @@ section .text
 %define xp     xmm2
 
 align 16
-global gf_vect_dot_prod_sse:function
-func(gf_vect_dot_prod_sse)
+global GF_VECT_DOT_PROD_SSE:function
+func(GF_VECT_DOT_PROD_SSE)
 	FUNC_SAVE
 	SLDR 	len, len_m
 	sub	len, 16
@@ -274,4 +300,4 @@ global %1_slver
 	db 0x%3, 0x%2
 %endmacro
 ;;;       func                 core, ver, snum
-slversion gf_vect_dot_prod_sse, 00,  04,  0060
+slversion GF_VECT_DOT_PROD_SSE, 00,  04,  0060
